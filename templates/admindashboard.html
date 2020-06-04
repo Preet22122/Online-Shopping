@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{%  include 'adminheader.html' %}
+welcome {{ request.session.adminemail }}
+</body>
+</html>

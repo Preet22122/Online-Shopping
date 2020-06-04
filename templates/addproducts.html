@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Products</title>
+<script>
+    function editproduct(){
+        var formdata=new FormData();
+        var controls=document.getElementById('form1').elements;
+        alert(controls.length);
+        var count=0;
+        for(var i=0;i<controls.length;i++){
+            if(controls[i].name=="" || controls[i].name==null){
+                count=1;
+            }
+
+            {#alert(controls[i].type+" "+controls[i].name+" "+controls[i].value);#}
+            if(controls[i].type=='file'){
+                  formdata.append(controls[i].name,controls[i].files[0]);
+            }
+            else{
+                  formdata.append(controls[i].name,controls[i].value);
+            }
+        }
+        if(count==1){
+            alert('give name to all controls');
+        }
+
+        else{
+            var xml=new XMLHttpRequest();
+        xml.onreadystatechange=function () {
+            if(xml.readyState==4 && xml.status==200){
+                var response=xml.responseText.trim();
+                if(response=="success"){
+                    alert('product addedd successfully');
+                }
+            }
+        };
+        xml.open('POST','addproduct',true);
+        xml.send(formdata);
+        }
+
+
+    }
+</script>
+</head>
+<body>
+{%  include 'adminheader.html' %}
+<div class="container">
+    <div class="page-header text-center">
+        <h1>ADD PRODUCTS</h1>
+    </div>
+    <form id="form1">
+<div class="form-group">
+<label>Choose Category</label>
+    <select name="cname" class="form-control">
+{% for r in list %}
+        <option value="{{ r }}">{{ r }}</option>
+        {%  endfor %}
+
+    </select>
+</div>
+        <div class="form-group">
+            <label>Enter Name</label>
+            <input type="text" name="pname" placeholder="Enter Name" title="enter name" required class="form-control">
+        </div>
+        <div class="form-group">
+            <label>Enter Description</label>
+            <textarea cols="10" rows="4" name="description" class="form-control"></textarea>
+        </div>
+        <div class="form-group">
+            <label>Enter Cost Price</label>
+            <input type="number" name="costprice" class="form-control">
+        </div>
+         <div class="form-group">
+            <label>Enter Selling Price</label>
+            <input type="number" name="sellingprice" class="form-control">
+        </div>
+         <div class="form-group">
+            <label>Enter Discount</label>
+            <input type="number" name="discount" class="form-control">
+        </div>
+         <div class="form-group">
+            <label>Enter Quantity</label>
+            <input type="number" name="quantity" class="form-control">
+        </div>
+    <div class="form-group">
+            <label>Choose Photo</label>
+            <input type="file" name="photo" class="form-control">
+        </div>
+        <div class="form-group">
+            <input type="button" name="btn" class="btn btn-success" value="ADD" onclick="editproduct()">
+        </div>
+    </form>
+    {{ message }}
+</div>
+</body>
+</html>
